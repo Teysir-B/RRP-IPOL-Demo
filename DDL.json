@@ -3,7 +3,7 @@
         "demo_title": "Automatic Speech Recognition via Large-Scale Weak Supervision",
         "requirements": "docker",
         "xlink_article": "https://arxiv.org/pdf/2212.04356.pdf",
-        "description": "This demo is runs a method for automatic speech reconition in French, Galician and Persian. The algorithm takes as input an audio file and automatically transcribes it.",
+        "description": "This demo runs a method for automatic speech reconition in French, Galician and Persian. The algorithm takes as input an audio file and automatically transcribes it.",
         "timeout": 300
     },
     "build": {
