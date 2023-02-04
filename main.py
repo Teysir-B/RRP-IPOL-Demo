@@ -1,6 +1,6 @@
 import whisper
 
-def main(audio, language):
+def function(audio, language):
     model = whisper.load_model("base")
     # Set options
     options = dict(language = language)
