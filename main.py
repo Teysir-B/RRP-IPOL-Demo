@@ -1,6 +1,6 @@
 import whisper
 
-def function(audio, language):
+def main(audio, language):
     model = whisper.load_model("base")
     # Set options
     options = dict(language = language)
@@ -16,4 +16,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     print(args.language)
-    #main(args.audio, args.language)
+    main(args.audio, args.language)
