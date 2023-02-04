@@ -1,12 +1,13 @@
 import whisper
+from scipy.io import wavfile
 
 def main(audio, language):
     model = whisper.load_model("base")
     # Set options
-    options = dict(language = language)
-    transcribe_options = dict(task = "transcribe", **options)
-    result = model.transcribe(audio, **transcribe_options)
-    print(result["text"])
+    #options = dict(language = language)
+    #transcribe_options = dict(task = "transcribe", **options)
+    #result = model.transcribe(audio, **transcribe_options)
+    #print(result["text"])
 
 if __name__ == "__main__":
     import argparse
