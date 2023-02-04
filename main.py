@@ -15,4 +15,5 @@ if __name__ == "__main__":
     parser.add_argument("--language", type = str, required=True)
 
     args = parser.parse_args()
-    main(args.audio, args.language)
+    print(args.language)
+    #main(args.audio, args.language)
