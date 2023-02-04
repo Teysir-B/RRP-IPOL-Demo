@@ -1,8 +1,9 @@
-import whisper
+#import whisper
 from scipy.io import wavfile
 
 def main(audio, language):
-    model = whisper.load_model("base")
+    print(audio)
+    #model = whisper.load_model("base")
     # Set options
     #options = dict(language = language)
     #transcribe_options = dict(task = "transcribe", **options)
