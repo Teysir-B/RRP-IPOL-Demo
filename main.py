@@ -3,6 +3,7 @@ from scipy.io import wavfile
 
 def main(audio, language):
     print(audio)
+    
     #model = whisper.load_model("base")
     # Set options
     #options = dict(language = language)
@@ -17,5 +18,5 @@ if __name__ == "__main__":
     parser.add_argument("--language", type = str, required=True)
 
     args = parser.parse_args()
-    print(args.language)
+    print("Blablabla")
     main(args.audio, args.language)
