@@ -32,7 +32,7 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--audio_file", type=str, required=True)
-    parser.add_argument("--language", type=float, required=True)
+    parser.add_argument("--language", type=str, required=True)
     
     args = parser.parse_args()
     main(args.audio_file, args.language)
