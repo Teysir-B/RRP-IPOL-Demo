@@ -15,7 +15,7 @@ RATE = 16e3
 def main(audio_file, language):
 
     # Load audio
-    datarate, audio = wavfile.read(input)
+    datarate, audio = wavfile.read(audio_file)
     # Normalize audio
     audio = audio / audio.max() 
     audio = audio.astype(np.float16)
