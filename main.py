@@ -12,11 +12,13 @@ def main(audio, language):
     #print(result["text"])
 
 if __name__ == "__main__":
+    print("Blablabla")
     import argparse
+    
     parser = argparse.ArgumentParser()
     parser.add_argument("--audio", type = str, required=True)
     parser.add_argument("--language", type = str, required=True)
 
     args = parser.parse_args()
-    print("Blablabla")
+    
     main(args.audio, args.language)
