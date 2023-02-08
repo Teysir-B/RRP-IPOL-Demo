@@ -25,7 +25,7 @@ def main(audio_file, language):
         audio = signal.resample(audio, new_len)
     audio = whisper.pad_or_trim(audio)
     model = whisper.load_model("base.en")
-    results = model.transcribe(audio, task = "transcribe", verbose = 1, fp16 = False)
+    results = model.transcribe(audio, task = "transcribe", fp16 = False)
     print(results["text"])
 
 if __name__ == "__main__":
