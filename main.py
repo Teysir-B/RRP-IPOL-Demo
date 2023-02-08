@@ -1,5 +1,11 @@
 #import whisper
+import os
+import iio
+import numpy as np
 from scipy.io import wavfile
+from scipy.io import wavfile
+
+ROOT = os.path.dirname(os.path.realpath(__file__))
 
 def main(audio, language):
     print(audio)
