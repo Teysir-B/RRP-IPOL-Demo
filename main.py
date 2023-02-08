@@ -16,6 +16,9 @@ def main(audio_file, language):
 
     # Load audio
     datarate, audio = wavfile.read(audio_file)
+    if len(audio.shape) == 2:
+        # Stereo to Mono
+        audio = audio.mean(axis=1)
     # Normalize audio
     audio = audio / audio.max() 
     audio = audio.astype(np.float16)
