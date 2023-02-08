@@ -11,18 +11,17 @@ import whisper
 # for example:
 #    torch.load(os.path.join(ROOT, 'weights.pth'))
 ROOT = os.path.dirname(os.path.realpath(__file__))
+RATE = 16e3
+def main(audio_file, language):
 
-def main(input, output, sigma):
-
-    rate = 16e3
     # Load audio
     datarate, audio = wavfile.read(input)
     # Normalize audio
     audio = audio / audio.max() 
     audio = audio.astype(np.float16)
     # Resample
-    if datarate != rate:
-        new_len = int(len(audio)*(rate/datarate))
+    if datarate != RATE:
+        new_len = int(len(audio)*(RATE/datarate))
         audio = signal.resample(audio, new_len)
     audio = whisper.pad_or_trim(audio)
     model = whisper.load_model("base.en")
@@ -32,9 +31,8 @@ def main(input, output, sigma):
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input", type=str, required=True)
-    parser.add_argument("--sigma", type=float, required=True)
-    parser.add_argument("--output", type=str, required=True)
+    parser.add_argument("--audio_file", type=str, required=True)
+    parser.add_argument("--language", type=float, required=True)
     
     args = parser.parse_args()
-    main(args.input, args.output, args.sigma)
+    main(args.audio_file, args.language)
