@@ -31,7 +31,8 @@ def main(audio_file, language):
     #checkpoint_path = "./tiny_multilanguage.ckpt"
     #model = whisper.load_model(checkpoint_path)
     model = whisper.load_model("tiny")
-    transcribe_options = dict(task = "transcribe", language = language)
+    options = dict(language = language)
+    transcribe_options = dict(task = "transcribe", **options)
     results = model.transcribe(audio, **transcribe_options)
     print(results["text"])
 
