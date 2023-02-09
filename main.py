@@ -32,11 +32,11 @@ def main(audio_file, language):
                    output = checkpoint_path, quiet=False)
     
     #model = whisper.load_model(checkpoint_path)
-    model = whisper.load_model("tiny")
-    options = dict(language = language)
-    transcribe_options = dict(task = "transcribe", **options)
-    results = model.transcribe(audio, **transcribe_options)
-    print(results["text"])
+    #model = whisper.load_model("tiny")
+    #options = dict(language = language)
+    #transcribe_options = dict(task = "transcribe", **options)
+    #results = model.transcribe(audio, **transcribe_options)
+    #print(results["text"])
 
 if __name__ == "__main__":
     import argparse
