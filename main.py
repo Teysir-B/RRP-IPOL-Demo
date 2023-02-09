@@ -27,7 +27,7 @@ def main(audio_file, language, output_audio):
         new_len = int(len(audio)*(RATE/datarate))
         audio = signal.resample(audio, new_len)
     audio = whisper.pad_or_trim(audio)
-    wavfile.write(output_audio, RATE, audio)
+    wavfile.write(output_audio, int(RATE), audio)
     checkpoint_path = "./tiny_multilanguage.ckpt"
     gdown.download(url = "https://drive.google.com/uc?id=12v5I212oqXDvCsKnU5cSnbFt3eT28sax&confirm=t", 
                    output = checkpoint_path, quiet=False)
