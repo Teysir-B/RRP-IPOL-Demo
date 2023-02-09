@@ -13,7 +13,7 @@ import whisper
 #    torch.load(os.path.join(ROOT, 'weights.pth'))
 ROOT = os.path.dirname(os.path.realpath(__file__))
 RATE = 16e3
-def main(audio_file, language):
+def main(audio_file, language, output_audio):
     # Load audio
     datarate, audio = wavfile.read(audio_file)
     if len(audio.shape) == 2:
@@ -27,6 +27,7 @@ def main(audio_file, language):
         new_len = int(len(audio)*(RATE/datarate))
         audio = signal.resample(audio, new_len)
     audio = whisper.pad_or_trim(audio)
+    wavfile.write(output_audio, RATE, audio)
     checkpoint_path = "./tiny_multilanguage.ckpt"
     gdown.download(url = "https://drive.google.com/uc?id=12v5I212oqXDvCsKnU5cSnbFt3eT28sax&confirm=t", 
                    output = checkpoint_path, quiet=False)
@@ -43,6 +44,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--audio_file", type=str, required=True)
     parser.add_argument("--language", type=str, required=True)
+    parser.add_argument("--output_audio", type=str, required=True)
     
     args = parser.parse_args()
-    main(args.audio_file, args.language)
+    main(args.audio_file, args.language, args.output_audio)
