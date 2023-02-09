@@ -13,7 +13,7 @@ import whisper
 ROOT = os.path.dirname(os.path.realpath(__file__))
 RATE = 16e3
 def main(audio_file, language):
-
+    print(language)
     # Load audio
     datarate, audio = wavfile.read(audio_file)
     if len(audio.shape) == 2:
@@ -34,7 +34,7 @@ def main(audio_file, language):
     options = dict(language = language)
     transcribe_options = dict(task = "transcribe", **options)
     results = model.transcribe(audio, **transcribe_options)
-    print(results["text"])
+    #print(results["text"])
 
 if __name__ == "__main__":
     import argparse
