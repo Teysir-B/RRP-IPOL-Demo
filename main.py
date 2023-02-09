@@ -13,7 +13,7 @@ import whisper
 #    torch.load(os.path.join(ROOT, 'weights.pth'))
 ROOT = os.path.dirname(os.path.realpath(__file__))
 RATE = 16e3
-def main(audio_file, language, output_audio):
+def main(audio_file, language, output_audio, noisy_audio, sigma):
     # Load audio
     datarate, audio = wavfile.read(audio_file)
     if len(audio.shape) == 2:
@@ -27,7 +27,9 @@ def main(audio_file, language, output_audio):
         new_len = int(len(audio)*(RATE/datarate))
         audio = signal.resample(audio, new_len)
     audio = whisper.pad_or_trim(audio)
-    wavfile.write(output_audio, int(RATE), audio)
+    wavfile.write(output_audio, datarate, audio)
+    audio += np.random.normal(0, sigma, *audio.shape)
+    wavfile.write(noisy_audio, datarate, audio)
     checkpoint_path = "./tiny_multilanguage.ckpt"
     gdown.download(url = "https://drive.google.com/uc?id=12v5I212oqXDvCsKnU5cSnbFt3eT28sax&confirm=t", 
                    output = checkpoint_path, quiet=False)
@@ -45,6 +47,8 @@ if __name__ == "__main__":
     parser.add_argument("--audio_file", type=str, required=True)
     parser.add_argument("--language", type=str, required=True)
     parser.add_argument("--output_audio", type=str, required=True)
+    parser.add_argument("--noisy_audio", type=str, required=True)
+    parser.add_argument("--sigma", type=float, required=True)
     
     args = parser.parse_args()
-    main(args.audio_file, args.language, args.output_audio)
+    main(args.audio_file, args.language, args.output_audio, args.noisy_audio, args.sigma)
