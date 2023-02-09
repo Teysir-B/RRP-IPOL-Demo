@@ -31,12 +31,12 @@ def main(audio_file, language):
     gdown.download(url = "https://drive.google.com/uc?id=12v5I212oqXDvCsKnU5cSnbFt3eT28sax&confirm=t", 
                    output = checkpoint_path, quiet=False)
     
-    #model = whisper.load_model(checkpoint_path)
+    model = whisper.load_model(checkpoint_path)
     #model = whisper.load_model("tiny")
-    #options = dict(language = language)
-    #transcribe_options = dict(task = "transcribe", **options)
-    #results = model.transcribe(audio, **transcribe_options)
-    #print(results["text"])
+    options = dict(language = language)
+    transcribe_options = dict(task = "transcribe", **options)
+    results = model.transcribe(audio, **transcribe_options)
+    print(results["text"])
 
 if __name__ == "__main__":
     import argparse
