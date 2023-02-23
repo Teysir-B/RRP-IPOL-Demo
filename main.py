@@ -119,11 +119,7 @@ if __name__ == "__main__":
     parser.add_argument("--wet_level", type=float, required=True)
     
     args = parser.parse_args()
-    print(args.audio_in, args.audio_out, 
-          args.language, args.finetuned, 
-          args.add_noise, args.snr,
-          args.impulse_response, args.wet_level)
-    exit()
+
     main(args.audio_in, args.audio_out, 
           args.language, args.finetuned, 
           args.add_noise, args.snr,
