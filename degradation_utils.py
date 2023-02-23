@@ -7,10 +7,10 @@ def compose_degradations(add_noise, snr, impulse_response, wet_level):
   """ Compose degradation json file from parameters """
   list_degradations = []
   # Additive noise
-  if len(add_noise) != 0:
+  if add_noise != "none":
     list_degradations.append(f"mix,{add_noise},{snr}")
   # Convolution + Reverberation
-  if len(impulse_response) != 0:
+  if impulse_response != "none":
     list_degradations.append(f"convolution,{impulse_response},{wet_level}")
   # ...
   if len(list_degradations) !=0 :
