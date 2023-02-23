@@ -33,8 +33,8 @@ def load_finetuned(language="French"):
   with open("./finetuned_models.json") as file:
     dict_finetuned = json.load(file)  
   # Download 
-  for f, id in dict_finetuned[language].items():
-    gdown.download(f"https://drive.google.com/uc?export=download&confirm=pbef&id={file_id}",
+  for f, file_id in dict_finetuned[language].items():
+    gdown.download(f"https://drive.google.com/uc?id={file_id}&confirm=t",
                  output=f"./pretrained/{f}",
                  use_cookies=False)
   et = time.time()
