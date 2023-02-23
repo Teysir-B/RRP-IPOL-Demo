@@ -1,6 +1,8 @@
+
 numpy==1.22.4
-iio==0.0.3
+torch==1.13.1
 gdown==4.4.0
+librosa==0.8.1
 transformers==4.26.0
 scipy==1.6
 sox==1.4.1
