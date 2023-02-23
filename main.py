@@ -78,7 +78,7 @@ def main(audio_in, audio_out, # audio files
       try:
         load_finetuned(language)
       except:
-        print(f"\nFailed to download finetuned weights from Drive. 
+        print(f"\nFailed to download finetuned weights from Drive. "
               f"Please refresh or try later.\n")
         exit()
       pretrained_path = "./pretrained"
