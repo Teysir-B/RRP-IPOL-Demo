@@ -104,10 +104,14 @@ def main(audio_in,  # audio files
     model = WhisperForConditionalGeneration.from_pretrained(pretrained_path)
 
     ## Process audio with Whisper
+    st = time.time()
     inputs = processor(samples, sampling_rate=RATE, return_tensors="pt")
     generated_ids = model.generate(inputs=inputs.input_features)
     transcription = processor.batch_decode(generated_ids, 
                                             skip_special_tokens=True)[0]
+    et = time.time()
+    print(f"Transcribed audio in {et-st:.3f} seconds.")
+    
     f = open("transcription.txt", "w")
     f.write(transcription)
     f.close()
