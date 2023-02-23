@@ -58,8 +58,7 @@ def main(audio_in,  # audio files
     # Resample
     if sample_rate_in != RATE:
         samples, sample_rate = apply_degradation(["resample,16000"], 
-                                                samples, sample_rate_in,
-                                                save_file = "output.wav")
+                                                samples, sample_rate_in)
         assert sample_rate == RATE
     # Normalize
     samples = prepare_audio(samples)
@@ -68,15 +67,15 @@ def main(audio_in,  # audio files
                                             impulse_response, wet_level)
     if len(list_degradations) !=0:
       samples, sample_rate = apply_degradation(list_degradations, 
-                                                samples, RATE, 
-                                                save_file = "output.wav",
+                                                samples, RATE,
                                                 verbose=1)
     # Trim audio
     max_len = int(RATE*30)
     if len(samples)>max_len:
       samples = samples[:max_len]
     # Write processed audio
-
+    save_audio(samples, RATE, save_file="output.wav")
+    
     ## Load model
     if finetuned == "true":
       try:
