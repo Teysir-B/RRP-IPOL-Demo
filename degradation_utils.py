@@ -1,7 +1,9 @@
 import time
 from typing import List
 import numpy as np
+import sox
 import audio_degrader as ad
+
 
 def compose_degradations(add_noise, snr, impulse_response, wet_level):
   """ Compose degradation json file from parameters """
@@ -29,7 +31,9 @@ def prepare_audio(samples):
     return samples
 
 def apply_degradation(degradation: List[str], samples, 
-                      sample_rate_in: int = 16e3, verbose=0):
+                      sample_rate_in: int = 16e3,
+                      save_file = None, 
+                      verbose=0):
   """
   Function to apply degradations on one audio samples.
   Inputs:
@@ -49,6 +53,15 @@ def apply_degradation(degradation: List[str], samples,
   for d in degradation:
     audio.apply_degradation(d)
   et = time.time()
+
+  if save_file is not None:
+    tfm = sox.Transformer()
+    tfm.set_output_format(rate=audio.sample_rate, 
+                          bits=16, channels=1)
+    tfm.build_file(input_array=audio.samples, 
+                    sample_rate_in=audio.sample_rate,
+                    output_filepath='output.wav'
+    )
   if verbose>0:
     print(f"\nApplied degradations in {et-st:.3f} seconds.")
   return audio.samples, int(audio.sample_rate)

@@ -1,4 +1,5 @@
 import os
+import iio
 import time
 import gdown
 import json
@@ -39,7 +40,7 @@ def load_finetuned(language="French"):
   et = time.time()
   print(f"\nDownloaded finetuned weights in {et-st:.3f} seconds.")
 
-def main(audio_in, # audio files
+def main(audio_in, audio_out, # audio files
           language, finetuned, # model 
           add_noise, snr, # degradation options
           impulse_response, wet_level):
@@ -63,13 +64,14 @@ def main(audio_in, # audio files
                                             impulse_response, wet_level)
     if len(list_degradations) !=0:
       samples, sample_rate = apply_degradation(list_degradations, 
-                                                samples, RATE, verbose=1)
+                                                samples, RATE, 
+                                                save_file = "output.wav",
+                                                verbose=1)
     # Trim audio
     max_len = int(RATE*30)
     if len(samples)>max_len:
       samples = samples[:max_len]
     # Write processed audio
-    wavfile.write("output.wav", int(RATE), samples)
 
     ## Load model
     print(finetuned)  
@@ -77,8 +79,8 @@ def main(audio_in, # audio files
       try:
         load_finetuned(language)
       except:
-        print(f"\nFailed to download finetuned weights from Drive. "
-              f"Please refresh or try later.\n")
+        print("\nFailed to download finetuned weights from Drive." 
+              "Please refresh or try later.\n")
         exit()
       pretrained_path = "./pretrained"
     else:
@@ -109,16 +111,17 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--audio_in", type=str, required=True)
+    parser.add_argument("--audio_out", type=str, required=True)
     parser.add_argument("--language", type=str, required=True)
     parser.add_argument("--finetuned", type=str, required=True)
     parser.add_argument("--add_noise", type=str, required=True)
     parser.add_argument("--snr", type=float, required=True)
     parser.add_argument("--impulse_response", type=str, required=True)
     parser.add_argument("--wet_level", type=float, required=True)
+
     
     args = parser.parse_args()
-
-    main(args.audio_in,
+    main(args.audio_in, args.audio_out, 
           args.language, args.finetuned, 
           args.add_noise, args.snr,
           args.impulse_response, args.wet_level)
