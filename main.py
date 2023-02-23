@@ -30,7 +30,7 @@ def load_finetuned(language="French"):
     os.mkdir("./pretrained")
   st = time.time()
   # Load dictionary of ids
-  with open("./finetuned_models.json") as file:
+  with open(os.path.join(ROOT,"finetuned_models.json")) as file:
     dict_finetuned = json.load(file)  
   # Download 
   for f, file_id in dict_finetuned[language].items():
