@@ -105,7 +105,9 @@ def main(audio_in,  # audio files
     generated_ids = model.generate(inputs=inputs.input_features)
     transcription = processor.batch_decode(generated_ids, 
                                             skip_special_tokens=True)[0]
-    print("\n",transcription)
+    f = open("transcription.txt", "a")
+    f.write(transcription)
+    f.close()
 
 if __name__ == "__main__":
     import argparse
