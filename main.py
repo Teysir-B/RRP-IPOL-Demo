@@ -69,6 +69,7 @@ def main(audio_in, audio_out, # audio files
     if len(samples)>max_len:
       samples = samples[:max_len]
     # Write processed audio
+    print(audio_out)
     wavfile.write(audio_out, int(RATE), samples)
 
     ## Load model
