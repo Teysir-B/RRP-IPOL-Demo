@@ -110,7 +110,7 @@ def main(audio_in,  # audio files
     transcription = processor.batch_decode(generated_ids, 
                                             skip_special_tokens=True)[0]
     et = time.time()
-    print(f"Transcribed audio in {et-st:.3f} seconds.")
+    print(f"\nTranscribed audio in {et-st:.3f} seconds.")
     
     f = open("transcription.txt", "w")
     f.write(transcription)
