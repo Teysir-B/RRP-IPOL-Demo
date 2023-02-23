@@ -80,7 +80,7 @@ def main(audio_in,  # audio files
     if finetuned == "true":
       try:
         load_finetuned(language)
-      except as e:
+      except Exception as e:
         print("\nFailed to download finetuned weights from Drive." 
               "Please refresh or try later.\n")
         print(e)
