@@ -74,7 +74,6 @@ def main(audio_in,  # audio files
     # Write processed audio
 
     ## Load model
-    print(finetuned)  
     if finetuned == "true":
       try:
         load_finetuned(language)
