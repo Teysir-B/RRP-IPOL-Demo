@@ -40,7 +40,7 @@ def load_finetuned(language="French"):
   et = time.time()
   print(f"\nDownloaded finetuned weights in {et-st:.3f} seconds.")
 
-def main(audio_in, audio_out, # audio files
+def main(audio_in,  # audio files
           language, finetuned, # model 
           add_noise, snr, # degradation options
           impulse_response, wet_level):
@@ -111,7 +111,6 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--audio_in", type=str, required=True)
-    parser.add_argument("--audio_out", type=str, required=True)
     parser.add_argument("--language", type=str, required=True)
     parser.add_argument("--finetuned", type=str, required=True)
     parser.add_argument("--add_noise", type=str, required=True)
@@ -121,7 +120,7 @@ if __name__ == "__main__":
 
     
     args = parser.parse_args()
-    main(args.audio_in, args.audio_out, 
+    main(args.audio_in, 
           args.language, args.finetuned, 
           args.add_noise, args.snr,
           args.impulse_response, args.wet_level)
