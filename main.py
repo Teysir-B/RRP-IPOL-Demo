@@ -34,8 +34,9 @@ def load_finetuned(language="French"):
     dict_finetuned = json.load(file)  
   # Download 
   for f, id in dict_finetuned[language].items():
-    gdown.download(f"https://drive.google.com/uc?id={id}&confirm=t",
-                 output=f"./pretrained/{f}")
+    gdown.download(f"https://drive.google.com/uc?export=download&confirm=pbef&id={file_id}",
+                 output=f"./pretrained/{f}",
+                 use_cookies=False)
   et = time.time()
   print(f"\nDownloaded finetuned weights in {et-st:.3f} seconds.")
 
@@ -77,12 +78,15 @@ def main(audio_in, audio_out, # audio files
       try:
         load_finetuned(language)
       except:
-        print("\nFailed to download weights from Drive. Please refresh or try later.")
+        print(f"\nFailed to download finetuned weights from Drive. 
+              f"Please refresh or try later.\n")
+        exit()
       pretrained_path = "./pretrained"
     else:
       pretrained_path = "openai/whisper-tiny" 
       print(f"\nYou haven't checked finetuned weights. " 
-            f"The pretrained model is the multilangual \"openai/whisper-tiny\".")
+            f"The pretrained model is the multilangual \"openai/whisper-tiny\".\n")
+
 
     ## Instanciate whisper pipeline
     # feature_extractor: 1. trim+pad 2. STFT 3. MEL cepstrum == features
