@@ -29,7 +29,16 @@ def prepare_audio(samples):
       rms_samples = np.sqrt(np.sum(np.power(samples, 2)))
       samples = samples/rms_samples
     return samples
-
+  
+def save_audio(samples, sample_rate, save_file):
+    tfm = sox.Transformer()
+    tfm.set_output_format(rate=sample_rate, 
+                          bits=32, channels=1)
+    tfm.build_file(input_array=samples, 
+                    sample_rate_in=sample_rate,
+                    output_filepath='output.wav'
+    )
+    
 def apply_degradation(degradation: List[str], samples, 
                       sample_rate_in: int = 16e3,
                       save_file = None, 
