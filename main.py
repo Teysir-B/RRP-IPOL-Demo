@@ -55,7 +55,8 @@ def main(audio_in,  # audio files
     # Resample
     if sample_rate_in != RATE:
         samples, sample_rate = apply_degradation(["resample,16000"], 
-                                                samples, sample_rate_in)
+                                                samples, sample_rate_in,
+                                                save_file = "output.wav")
         assert sample_rate == RATE
     # Normalize
     samples = prepare_audio(samples)
