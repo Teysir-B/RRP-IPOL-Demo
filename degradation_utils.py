@@ -57,7 +57,7 @@ def apply_degradation(degradation: List[str], samples,
   if save_file is not None:
     tfm = sox.Transformer()
     tfm.set_output_format(rate=audio.sample_rate, 
-                          bits=16, channels=1)
+                          bits=32, channels=2)
     tfm.build_file(input_array=audio.samples, 
                     sample_rate_in=audio.sample_rate,
                     output_filepath='output.wav'
