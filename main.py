@@ -45,6 +45,9 @@ def main(audio_in,  # audio files
           add_noise, snr, # degradation options
           impulse_response, wet_level):
     
+    f = open("transcription.txt", "a")
+    f.close()
+    
     ## Load audio
     sample_rate_in, samples = wavfile.read(audio_in)
     
@@ -105,7 +108,7 @@ def main(audio_in,  # audio files
     generated_ids = model.generate(inputs=inputs.input_features)
     transcription = processor.batch_decode(generated_ids, 
                                             skip_special_tokens=True)[0]
-    f = open("transcription.txt", "a")
+    f = open("transcription.txt", "w")
     f.write(transcription)
     f.close()
 
