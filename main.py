@@ -1,5 +1,4 @@
 import os
-import iio
 import time
 import gdown
 import json
@@ -95,14 +94,17 @@ def main(audio_in,  # audio files
     ## Instanciate whisper pipeline
     # feature_extractor: 1. trim+pad 2. STFT 3. MEL cepstrum == features
     feature_extractor = WhisperFeatureExtractor.from_pretrained(pretrained_path)
-    # tokenizer: 1. split to tokens 2. tokens to ids 3. and back
+    # tokenizer
     tokenizer = WhisperTokenizer.from_pretrained("openai/whisper-tiny",
                                                 language=language, 
                                                 task="transcribe")
     # processor: wraps feature extractor + tokenizer 
     processor = WhisperProcessor(feature_extractor, tokenizer)
     model = WhisperForConditionalGeneration.from_pretrained(pretrained_path)
-
+    # Force task and language
+    forced_decoder_ids = processor.get_decoder_prompt_ids(language=language, 
+                                                          task="transcribe")
+    model.generation_config.forced_decoder_ids = forced_decoder_ids
     ## Process audio with Whisper
     st = time.time()
     inputs = processor(samples, sampling_rate=RATE, return_tensors="pt")
