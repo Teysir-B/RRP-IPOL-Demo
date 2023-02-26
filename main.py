@@ -54,13 +54,14 @@ def main(audio_in,  # audio files
     # Stereo to Mono
     if len(samples.shape) == 2:
         samples = samples.mean(axis=1)
+    # Normalize
+    samples = prepare_audio(samples)        
     # Resample
     if sample_rate_in != RATE:
         samples, sample_rate = apply_degradation(["resample,16000"], 
                                                 samples, sample_rate_in)
         assert sample_rate == RATE
-    # Normalize
-    samples = prepare_audio(samples)
+
     # Apply degradations
     list_degradations = compose_degradations(add_noise, snr,
                                             impulse_response, wet_level)
