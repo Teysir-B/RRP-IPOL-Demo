@@ -1,53 +1,136 @@
 {
     "general": {
-        "demo_title": "Python Demo Test",
+        "demo_title": "Automatic Speech Recognition via Large-Scale Weak Supervision",
         "requirements": "docker",
-        "timeout": 1
+        "xlink_article": "https://arxiv.org/pdf/2212.04356.pdf",
+        "description": "This demo runs a method for automatic speech reconition in French, Galician and Persian. The algorithm takes as input an audio file and automatically transcribes it. Several types of degradations are available.",
+        "timeout": 300
     },
     "build": {
-        "url": "git@github.com:Helene-Maxcici/IPOL.git",
+        "url": "git@github.com:Teysir-B/RRP-IPOL-Demo.git",
         "rev": "origin/main",
         "dockerfile": ".ipol/Dockerfile"
     },
     "inputs": [
         {
-            "description": "Audio file",
-            "max_weight": "100*1024*1024",
+            "description": "Input audio file",
             "ext": ".wav",
-            "required": true,
-            "type": "data"
+            "type": "data",
+            "max_weight":"100*1024*1024",
+            "required": true
         }
     ],
     "params": [
         {
-            "id": "sigma",
-            "label": "input sigma",
-            "comments": "Noise standard deviation",
-            "type": "range",
+            "default_value": "French",
+            "id": "language",
+            "label": "Language",
+            "type": "selection_radio",
             "values": {
-                "default": "30",
-                "max": 300,
-                "min": 0,
-                "step": 0.1
+                "French": "French",
+                "Galician": "Galician",
+                "Persian": "Persian"
             }
-        }
-    ],
-    "results": [
-        {
-            "contents": ["<h3>Input Audio </h3><audio controls> <source src= '+work_url+'out.wav type='audio/wav'></audio>"],
-            "type": "html_text"
         },
         {
+            "type": "checkbox",
+            "id": "finetuned",
+            "label": "Finetuned",
+            "default_value": true
+        },
+        
+        {
+            "type": "selection_collapsed",
+            "id": "add_noise",
+            "label": "Additive Noise",
+            "default_value": "none",
+            "values": {
+                "____None____": "none",
+                "Pub Ambience": "sounds/ambience-pub.wav",
+                "Applause": "sounds/applause.wav",
+                "Brown noise": "sounds/brown-noise.wav",
+                "Debate1": "sounds/debate1.wav",
+                "Debate2": "sounds/debate2.wav",
+                "Helen": "sounds/helen.wav",
+                "Hum": "sounds/hum.wav",
+                "White": "sounds/white-noise.wav"
+            }
+        },
+        {
+            "type": "numeric",
+            "id": "snr",
+            "label": "SNR",
+            "comments": "in dB | For the additive noise",
+            "values": {
+                "min": -50,
+                "max": 50,
+                "default":6
+            }
+        },
+        
+        {
+            "type": "selection_collapsed",
+            "id": "impulse_response",
+            "label": "Impulse Response",
+            "default_value": "none",
+            "values": {
+                "____None____": "none",
+                "Classroom":"impulse_responses/ir_classroom_mono.wav",
+                "Smartphone  ": "impulse_responses/ir_smartphone_mic_mono.wav"
+            }
+        },
+        
+        {
+            "type": "numeric",
+            "id": "wet_level",
+            "label": "Wet level",
+            "comments": "0=dry, 1=wet",
+            "values": {
+                "min": 0,
+                "max": 1,
+                "default":0.5
+            }
+        }
+        
+    ],
+    "run": "python3 $bin/main.py --audio_in $input_0 --language $language --finetuned $finetuned --add_noise $add_noise --snr $snr --impulse_response $impulse_response --wet_level $wet_level",
+    "results": [
+        {
+            "type": "html_text",
+            "contents": "'<h3>Original audio </h3><audio controls> <source src='+work_url+'input_0.wav></audio>'"
+        },
+        {
+            "type": "html_text",
+            "contents": "'<h3>Processed audio </h3><audio controls> <source src='+work_url+'output.wav></audio>'"
+        },
+
+        {
             "contents": "stdout.txt",
-            "label": "<p>Output</p>",
-            "type": "text_file"
+            "label": "Log file",
+            "type": "text_file",
+            "style": "{'white-space': 'pre-wrap', 'overflow-y': 'auto','width': '500', 'height': 'auto'}"
+        },
+        {
+            "contents": "transcription.txt",
+            "label": "Transcription",
+            "type": "text_file",
+            "style": "{'white-space': 'pre-wrap', 'overflow-y': 'auto','width': '500', 'height': 'auto'}"
         }
     ],
     "archive": {
-        "enable_reconstruct": true,
-        "info": {
-            "run_time": "run time"
-        }
-    },
-    "run": "python $bin/main.py --input $input_0 --sigma $sigma --output out.wav"
+        "files": {
+            "input_0.wav": "Input",
+            "output.wav": "Processed Audio"
+        },
+        "params": [
+            "language",
+            "finetuned",
+            "add_noise",
+            "snr",
+            "impulse_response",
+            "wet_level"
+        ],
+        "hidden_files": {"transcription.txt": "Transcription", "stdout.txt": "log file"},
+        "enable_reconstruct":"true"
+    }
 }
