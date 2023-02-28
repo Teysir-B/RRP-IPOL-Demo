@@ -74,7 +74,8 @@ def main(audio_in,  # audio files
     if len(samples)>max_len:
       samples = samples[:max_len]
     # Write processed audio
-    save_audio(samples, RATE, save_file="output.wav")
+    output_samples = samples / samples.max()
+    save_audio(output_samples, RATE, save_file="output.wav")
     
     ## Load model
     if finetuned == "true":
