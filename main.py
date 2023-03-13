@@ -106,8 +106,7 @@ def main(audio_in,  # audio files
     processor = WhisperProcessor(feature_extractor, tokenizer)
     model = WhisperForConditionalGeneration.from_pretrained(pretrained_path)
     # Force task and language
-    print(force_language)
-    if force_language:
+    if force_language == "true":
       forced_decoder_ids = processor.get_decoder_prompt_ids(language=language, 
                                                           task="transcribe")
       model.generation_config.forced_decoder_ids = forced_decoder_ids
@@ -129,7 +128,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--audio_in", type=str, required=True)
     parser.add_argument("--language", type=str, required=True)
-    parser.add_argument("--force_language", type=int, required=True)
+    parser.add_argument("--force_language", type=str, required=True)
     parser.add_argument("--finetuned", type=str, required=True)
     parser.add_argument("--add_noise", type=str, required=True)
     parser.add_argument("--snr", type=float, required=True)
@@ -140,7 +139,7 @@ if __name__ == "__main__":
     
     args = parser.parse_args()
     main(args.audio_in, 
-          args.language, args.finetuned, bool(args.force_language),
+          args.language, args.finetuned, args.force_language,
           args.add_noise, args.snr,
           args.impulse_response, args.wet_level,
           args.pitch_shift)
