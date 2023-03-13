@@ -9,8 +9,7 @@ def compose_degradations(add_noise, snr, impulse_response, wet_level,
                           pitch_shift):
   """ Compose degradation json file from parameters """
   list_degradations = []
-  print(add_noise, snr, impulse_response, wet_level, 
-                          pitch_shift)
+
   # Additive noise
   if add_noise != "none":
     list_degradations.append(f"mix,{add_noise},{snr}")
