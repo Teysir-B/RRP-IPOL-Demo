@@ -40,9 +40,10 @@ def load_finetuned(language="French"):
   print(f"\nDownloaded finetuned weights in {et-st:.3f} seconds.")
 
 def main(audio_in,  # audio files
-          language, finetuned, # model 
+          language, finetuned, force_language, # model 
           add_noise, snr, # degradation options
-          impulse_response, wet_level):
+          impulse_response, wet_level,
+          pitch_shift):
     
     f = open("transcription.txt", "a")
     f.close()
@@ -64,7 +65,8 @@ def main(audio_in,  # audio files
 
     # Apply degradations
     list_degradations = compose_degradations(add_noise, snr,
-                                            impulse_response, wet_level)
+                                            impulse_response, wet_level,
+                                            pitch_shift)
     if len(list_degradations) !=0:
       samples, sample_rate = apply_degradation(list_degradations, 
                                                 samples, RATE,
@@ -104,9 +106,11 @@ def main(audio_in,  # audio files
     processor = WhisperProcessor(feature_extractor, tokenizer)
     model = WhisperForConditionalGeneration.from_pretrained(pretrained_path)
     # Force task and language
-    forced_decoder_ids = processor.get_decoder_prompt_ids(language=language, 
+    print(force_language)
+    if force_language:
+      forced_decoder_ids = processor.get_decoder_prompt_ids(language=language, 
                                                           task="transcribe")
-    model.generation_config.forced_decoder_ids = forced_decoder_ids
+      model.generation_config.forced_decoder_ids = forced_decoder_ids
     ## Process audio with Whisper
     st = time.time()
     inputs = processor(samples, sampling_rate=RATE, return_tensors="pt")
@@ -125,15 +129,18 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--audio_in", type=str, required=True)
     parser.add_argument("--language", type=str, required=True)
+    parser.add_argument("--force_language", type=int, required=True)
     parser.add_argument("--finetuned", type=str, required=True)
     parser.add_argument("--add_noise", type=str, required=True)
     parser.add_argument("--snr", type=float, required=True)
     parser.add_argument("--impulse_response", type=str, required=True)
     parser.add_argument("--wet_level", type=float, required=True)
+    parser.add_argument("--pitch_shift", type=float, required=True)
 
     
     args = parser.parse_args()
     main(args.audio_in, 
-          args.language, args.finetuned, 
+          args.language, args.finetuned, bool(args.force_language),
           args.add_noise, args.snr,
-          args.impulse_response, args.wet_level)
+          args.impulse_response, args.wet_level,
+          args.pitch_shift)
