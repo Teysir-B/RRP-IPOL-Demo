@@ -5,20 +5,29 @@ import sox
 import audio_degrader as ad
 
 
-def compose_degradations(add_noise, snr, impulse_response, wet_level, 
-                          pitch_shift):
+def compose_degradations(add_noise="none", snr=None, 
+                         impulse_response="none", wet_level=None, 
+                          pitch_shift=1, time_stretch=1, 
+                          dr_compression="none"):
   """ Compose degradation json file from parameters """
   list_degradations = []
-
-  # Additive noise
-  if add_noise != "none":
-    list_degradations.append(f"mix,{add_noise},{snr}")
-  # Convolution + Reverberation
-  if impulse_response != "none":
-    list_degradations.append(f"convolution,{impulse_response},{wet_level}")
   # Pitch Shift
   if pitch_shift !=1:
     list_degradations.append(f"pitch_shift,{pitch_shift}")
+  # Time stretch
+  if time_stretch !=1:
+    list_degradations.append(f"time_stretch,{time_stretch}")
+  # Dynamic range comression
+  if dr_compression != "none":
+    dr_compression = int(dr_compression)
+    list_degradations.append(f"dr_compression,{dr_compression}")
+  # Convolution + Reverberation
+  if impulse_response != "none":
+    list_degradations.append(f"convolution,{impulse_response},{wet_level}")
+  # Additive noise
+  if add_noise != "none":
+    list_degradations.append(f"mix,{add_noise},{snr}")
+  
   if len(list_degradations) !=0 :
     print("\nDegradation Composition:")
     for d in list_degradations:
@@ -78,4 +87,3 @@ def apply_degradation(degradation: List[str], samples,
   if verbose>0:
     print(f"\nApplied degradations in {et-st:.3f} seconds.")
   return audio.samples, int(audio.sample_rate)
-
